@@ -1,6 +1,12 @@
 "use client";
 import { useRef, useState } from "react";
 
+function acceptHint(accept: string) {
+  if (accept.includes("pdf")) return "Erlaubt: Bilder (JPG, PNG, …) und PDF.";
+  if (accept.includes("image")) return "Erlaubt: Bilder (JPG, PNG, …).";
+  return "";
+}
+
 export default function UploadButton({
   onUploaded,
   accept = "image/*",
@@ -31,6 +37,8 @@ export default function UploadButton({
     if (ref.current) ref.current.value = "";
   }
 
+  const hint = acceptHint(accept);
+
   return (
     <div>
       <input ref={ref} type="file" accept={accept} onChange={handleChange} className="hidden" />
@@ -38,10 +46,11 @@ export default function UploadButton({
         type="button"
         onClick={() => ref.current?.click()}
         disabled={uploading}
-        className="text-sm text-blue-600 border border-blue-200 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 disabled:opacity-50 transition-colors"
+        className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors min-h-11"
       >
-        {uploading ? "Lädt hoch..." : "📎 Datei hochladen"}
+        {uploading ? "Wird hochgeladen…" : "Datei auswählen"}
       </button>
+      {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
       {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
     </div>
   );

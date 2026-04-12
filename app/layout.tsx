@@ -29,7 +29,7 @@ export default function RootLayout({
             </Link>
             <Link
               href="/fahrzeuge/neu"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors inline-flex items-center justify-center min-h-11"
             >
               + Fahrzeug hinzufügen
             </Link>

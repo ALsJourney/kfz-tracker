@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { getDb } from "@/lib/db";
+import { EmptyState } from "@/components/EmptyState";
+import { StatusBadge, tuevBadgeFromDatum } from "@/components/StatusBadge";
+import { formatEuro } from "@/lib/formatEuro";
 
 type FahrzeugRow = {
   id: string;
@@ -7,6 +10,7 @@ type FahrzeugRow = {
   modell: string;
   baujahr: number | null;
   kennzeichen: string | null;
+  kilometerstand: number;
   kaufpreis: number;
   problem_kosten: number;
   teil_kosten: number;
@@ -14,20 +18,6 @@ type FahrzeugRow = {
   teil_anzahl: number;
   tuev_datum: string | null;
 };
-
-function formatEuro(n: number) {
-  return new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(n);
-}
-
-function tuevStatus(datum: string | null) {
-  if (!datum) return null;
-  const d = new Date(datum);
-  const now = new Date();
-  const diff = (d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
-  if (diff < 0) return { label: "Abgelaufen", cls: "bg-red-100 text-red-700" };
-  if (diff < 60) return { label: `${Math.ceil(diff)} Tage`, cls: "bg-yellow-100 text-yellow-700" };
-  return { label: d.toLocaleDateString("de-DE"), cls: "bg-green-100 text-green-700" };
-}
 
 export default function HomePage() {
   const db = getDb();
@@ -45,7 +35,8 @@ export default function HomePage() {
   `).all() as FahrzeugRow[];
 
   const gesamtInvestition = fahrzeuge.reduce(
-    (s, f) => s + f.kaufpreis + f.problem_kosten + f.teil_kosten, 0
+    (s, f) => s + f.kaufpreis + f.problem_kosten + f.teil_kosten,
+    0,
   );
 
   return (
@@ -55,48 +46,69 @@ export default function HomePage() {
           <h1 className="text-2xl font-bold text-gray-900">Meine Fahrzeuge</h1>
           {fahrzeuge.length > 0 && (
             <p className="text-sm text-gray-500 mt-1">
-              Gesamtinvestition: <span className="font-semibold text-gray-700">{formatEuro(gesamtInvestition)}</span>
+              Gesamtinvestition:{" "}
+              <span className="font-semibold text-gray-700">{formatEuro(gesamtInvestition)}</span>
             </p>
           )}
         </div>
       </div>
 
+      {fahrzeuge.length > 0 && (
+        <details className="mb-4 group">
+          <summary className="text-sm text-gray-600 cursor-pointer hover:text-gray-900 list-none flex items-center gap-2 [&::-webkit-details-marker]:hidden">
+            <span className="underline-offset-2 group-open:underline">Legende TÜV-Farben</span>
+          </summary>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-600 items-center pl-0 sm:pl-0">
+            <span className="inline-flex items-center gap-2">
+              <StatusBadge variant="tuev_abgelaufen" />
+              Abgelaufen oder unter 30 Tagen
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <StatusBadge variant="tuev_bald" label="z. B. 45 Tage" />
+              30–59 Tage bis TÜV
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <StatusBadge variant="tuev_ok" label="Datum" />
+              60+ Tage (OK)
+            </span>
+          </div>
+        </details>
+      )}
+
       {fahrzeuge.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-xl border border-gray-200">
-          <div className="text-5xl mb-4">🚗</div>
-          <h2 className="text-xl font-semibold text-gray-700 mb-2">Noch keine Fahrzeuge</h2>
-          <p className="text-gray-500 mb-6">Füge dein erstes Fahrzeug hinzu, um loszulegen.</p>
-          <Link
-            href="/fahrzeuge/neu"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors inline-block"
-          >
-            Fahrzeug hinzufügen
-          </Link>
-        </div>
+        <EmptyState
+          variant="hero"
+          icon="🚗"
+          title="Noch keine Fahrzeuge"
+          description="Füge dein erstes Fahrzeug hinzu, um loszulegen."
+          action={{ label: "Fahrzeug hinzufügen", href: "/fahrzeuge/neu" }}
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {fahrzeuge.map((f) => {
             const total = f.kaufpreis + f.problem_kosten + f.teil_kosten;
-            const tuev = tuevStatus(f.tuev_datum);
+            const tuev = tuevBadgeFromDatum(f.tuev_datum);
             return (
               <Link
                 key={f.id}
                 href={`/fahrzeuge/${f.id}`}
                 className="bg-white rounded-xl border border-gray-200 p-5 hover:border-blue-300 hover:shadow-md transition-all group"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <div className="min-w-0">
                     <h2 className="font-bold text-lg text-gray-900 group-hover:text-blue-700">
                       {f.marke} {f.modell}
                     </h2>
                     <p className="text-sm text-gray-500">
-                      {f.baujahr ?? "—"}{f.kennzeichen ? ` · ${f.kennzeichen}` : ""}
+                      {f.baujahr ?? "—"}
+                      {f.kennzeichen ? ` · ${f.kennzeichen}` : ""}
+                      {f.kilometerstand > 0 && (
+                        <> · 🛣️ {f.kilometerstand.toLocaleString("de-DE")} km</>
+                      )}
                     </p>
                   </div>
                   {tuev && (
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${tuev.cls}`}>
-                      TÜV: {tuev.label}
-                    </span>
+                    <StatusBadge variant={tuev.variant} label={`TÜV: ${tuev.label}`} className="shrink-0" />
                   )}
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center mt-3 pt-3 border-t border-gray-100">
@@ -106,7 +118,9 @@ export default function HomePage() {
                   </div>
                   <div>
                     <div className="text-xs text-gray-500">Reparaturen/Teile</div>
-                    <div className="font-semibold text-sm">{formatEuro(f.problem_kosten + f.teil_kosten)}</div>
+                    <div className="font-semibold text-sm">
+                      {formatEuro(f.problem_kosten + f.teil_kosten)}
+                    </div>
                   </div>
                   <div>
                     <div className="text-xs text-gray-500">Gesamt</div>
@@ -114,9 +128,13 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex gap-3 mt-3 text-xs text-gray-500">
-                  <span>{f.problem_anzahl} Problem{f.problem_anzahl !== 1 ? "e" : ""}</span>
+                  <span>
+                    {f.problem_anzahl} Problem{f.problem_anzahl !== 1 ? "e" : ""}
+                  </span>
                   <span>·</span>
-                  <span>{f.teil_anzahl} Teil{f.teil_anzahl !== 1 ? "e" : ""}</span>
+                  <span>
+                    {f.teil_anzahl} Teil{f.teil_anzahl !== 1 ? "e" : ""}
+                  </span>
                 </div>
               </Link>
             );
