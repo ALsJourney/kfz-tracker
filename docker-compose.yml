@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  kfz-tracker:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - kfz-data:/data
+    environment:
+      - DATA_DIR=/data
+      - UPLOAD_DIR=/data/uploads
+    restart: unless-stopped
+
+volumes:
+  kfz-data:
