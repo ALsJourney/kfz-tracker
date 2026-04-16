@@ -1,3 +1,6 @@
+import { Badge } from "@/components/ui/badge";
+import { formatTuevDatumDisplay } from "@/lib/car-data";
+
 export type StatusBadgeVariant =
   | "offen"
   | "in_bearbeitung"
@@ -7,12 +10,12 @@ export type StatusBadgeVariant =
   | "tuev_abgelaufen";
 
 const BADGE_STYLES: Record<StatusBadgeVariant, string> = {
-  offen: "bg-red-100 text-red-700",
-  in_bearbeitung: "bg-yellow-100 text-yellow-700",
-  geloest: "bg-green-100 text-green-700",
-  tuev_ok: "bg-green-100 text-green-700",
-  tuev_bald: "bg-yellow-100 text-yellow-700",
-  tuev_abgelaufen: "bg-red-100 text-red-700",
+  offen: "bg-[#FFEBEE] text-[#C62828]",
+  in_bearbeitung: "bg-[#FFF3E0] text-[#EF6C00]",
+  geloest: "bg-[#E8F5E9] text-[#2E7D32]",
+  tuev_ok: "bg-[#10b981]/15 text-[#047857]",
+  tuev_bald: "bg-[#f59e0b]/15 text-[#b45309]",
+  tuev_abgelaufen: "bg-[#ef4444]/15 text-[#dc2626]",
 };
 
 const BADGE_LABELS: Record<StatusBadgeVariant, string> = {
@@ -20,7 +23,7 @@ const BADGE_LABELS: Record<StatusBadgeVariant, string> = {
   in_bearbeitung: "In Bearbeitung",
   geloest: "Gelöst",
   tuev_ok: "TÜV OK",
-  tuev_bald: "TÜV bald",
+  tuev_bald: "TÜV fällig",
   tuev_abgelaufen: "Abgelaufen",
 };
 
@@ -30,20 +33,32 @@ export function statusBadgeForProblemStatus(status: string): StatusBadgeVariant 
   return "offen";
 }
 
-/** Days until TÜV due (negative = overdue). */
 export function tuevDaysUntil(datum: string): number {
-  const d = new Date(datum);
+  const [y, m] = datum.split("-").map(Number);
+  const lastDay = new Date(y, m, 0);
   const now = new Date();
-  return (d.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+  now.setHours(0, 0, 0, 0);
+  return (lastDay.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
 }
 
 export function tuevBadgeFromDatum(datum: string | null): { variant: StatusBadgeVariant; label: string } | null {
   if (!datum) return null;
+  
+  const country = typeof window !== "undefined" ? localStorage.getItem("app_country") : "DE";
   const diff = tuevDaysUntil(datum);
-  const d = new Date(datum);
-  if (diff < 0) return { variant: "tuev_abgelaufen", label: "Abgelaufen" };
-  if (diff < 60) return { variant: "tuev_bald", label: `${Math.ceil(diff)} Tage` };
-  return { variant: "tuev_ok", label: d.toLocaleDateString("de-DE") };
+  
+  // For Austria, the "Pickerl" is valid for 4 additional months (approx 120 days)
+  const gracePeriod = country === "AT" ? 120 : 0;
+  const effectiveDiff = diff + gracePeriod;
+
+  if (effectiveDiff < 0) return { variant: "tuev_abgelaufen", label: "Abgelaufen" };
+  if (diff < 60) {
+    const label = country === "AT" && diff < 0 
+      ? `Nachfrist (${Math.abs(Math.ceil(diff))} Tage)` 
+      : `${Math.ceil(diff)} Tage`;
+    return { variant: "tuev_bald", label };
+  }
+  return { variant: "tuev_ok", label: formatTuevDatumDisplay(datum) };
 }
 
 export function StatusBadge({
@@ -56,10 +71,11 @@ export function StatusBadge({
   className?: string;
 }) {
   return (
-    <span
-      className={`text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap ${BADGE_STYLES[variant]} ${className}`}
+    <Badge
+      variant="outline"
+      className={`${BADGE_STYLES[variant]} border-0 rounded text-xs font-bold font-geist whitespace-nowrap px-3 py-1 ${className}`}
     >
       {label ?? BADGE_LABELS[variant]}
-    </span>
+    </Badge>
   );
 }

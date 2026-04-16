@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KFZ-Tracker | Fahrzeug bearbeiten</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#852b00",
+                        "secondary-fixed": "#dbe1ff",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-secondary-fixed": "#01174b",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-fixed": "#00174d",
+                        "on-tertiary-container": "#ffd4c5",
+                        "tertiary-container": "#ad3b00",
+                        "on-secondary-container": "#3d4e84",
+                        "primary-container": "#1a56db",
+                        "on-surface": "#191c1d",
+                        "on-background": "#191c1d",
+                        "background": "#f8f9fa",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary-fixed-variant": "#334479",
+                        "on-primary-fixed-variant": "#003dab",
+                        "inverse-surface": "#2e3132",
+                        "surface-tint": "#1353d8",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "outline": "#737686",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "secondary-container": "#b1c2ff",
+                        "secondary": "#4b5c92",
+                        "inverse-primary": "#b5c4ff",
+                        "surface-container": "#edeeef",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#c3c5d7",
+                        "on-surface-variant": "#434654",
+                        "on-primary-container": "#d4dcff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-primary": "#ffffff",
+                        "primary": "#003fb1",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed-dim": "#b5c4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                @apply bg-surface-container-lowest/85 backdrop-blur-xl;
+            }
+            .ghost-border {
+                @apply ring-1 ring-outline-variant/10;
+            }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-body text-on-surface bg-surface antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 max-w-7xl mx-auto bg-gray-50/85 dark:bg-gray-900/85 backdrop-blur-xl border-b-0 shadow-[0_20px_40px_-12px_rgba(26,86,219,0.08)] bg-gray-100 dark:bg-gray-800">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tight text-blue-700 dark:text-blue-500 font-['Geist'] text-blue-700 dark:text-blue-500 font-normal text-gray-700 dark:text-gray-300">🚗 KFZ-Tracker</span>
+</div>
+<div class="flex items-center gap-6 hidden md:flex font-['Geist'] font-normal text-gray-700 dark:text-gray-300">
+<a class="text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 px-3 py-2 rounded-md" href="#">Dashboard</a>
+<a class="text-blue-700 dark:text-blue-400 font-semibold border-b-2 border-blue-700 px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 active:scale-95 transition-transform" href="#">Fahrzeuge</a>
+<a class="text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 px-3 py-2 rounded-md" href="#">Kosten</a>
+<a class="text-gray-500 dark:text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all duration-200 px-3 py-2 rounded-md" href="#">Termine</a>
+</div>
+<button class="bg-primary hover:bg-primary-fixed-dim text-on-primary px-4 py-2 rounded-xl text-sm font-medium transition-all shadow-sm hidden md:flex active:scale-95 transition-transform">+ Fahrzeug hinzufügen</button>
+</nav>
+<div class="flex flex-1 pt-24 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 gap-8">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col h-full p-4 w-64 border-r-0 bg-gray-50 dark:bg-gray-900 tonal-shift via bg-gray-100 dark:bg-gray-800 no-shadows font-['Geist'] text-sm font-medium text-blue-700 dark:text-blue-500 shrink-0">
+<div class="mb-8 px-4">
+<h2 class="text-lg font-bold text-blue-700">KFZ-Tracker</h2>
+<p class="text-xs text-on-surface-variant opacity-80 mt-1">Präzisions-Navigator</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:translate-x-1 transition-transform tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-lg hover:translate-x-1 transition-transform tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+                    Fahrzeuge
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:translate-x-1 transition-transform tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+                    Kosten
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:translate-x-1 transition-transform tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+                    Termine
+                </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 pb-20 md:pb-8">
+<!-- Header -->
+<div class="mb-8 flex items-center justify-between">
+<div>
+<a class="text-sm text-primary hover:underline flex items-center gap-1 mb-2 font-medium" href="#">
+<span class="material-symbols-outlined text-[1rem]">arrow_back</span>
+                        Zurück zur Übersicht
+                    </a>
+<h1 class="text-[1.5rem] font-semibold text-on-surface font-headline">Fahrzeug bearbeiten</h1>
+<p class="text-on-surface-variant text-sm mt-1">Aktualisieren Sie die Daten für M-AB 1234E</p>
+</div>
+<button class="text-error bg-error-container/50 hover:bg-error-container px-4 py-2 rounded-xl text-sm font-medium transition-colors flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[1.125rem]">delete</span>
+                    Löschen
+                </button>
+</div>
+<!-- Form Container -->
+<div class="bg-surface-container-lowest rounded-xl p-8 ghost-border shadow-sm">
+<form class="space-y-8">
+<!-- Section 1: Grunddaten -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-6">
+<h3 class="text-xs font-semibold tracking-[0.05em] uppercase text-on-surface-variant border-b border-surface-variant pb-2">Grunddaten</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1 relative">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="kennzeichen">Kennzeichen *</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow" id="kennzeichen" required="" type="text" value="M-AB 1234E"/>
+</div>
+<div class="space-y-1">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="marke">Marke</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow" id="marke" type="text" value="Volkswagen"/>
+</div>
+<div class="space-y-1">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="modell">Modell</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow" id="modell" type="text" value="ID.4 Pro"/>
+</div>
+<div class="space-y-1">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="baujahr">Baujahr</label>
+<input class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow" id="baujahr" type="number" value="2022"/>
+</div>
+</div>
+</div>
+<!-- Section 2: Technische Details -->
+<div class="bg-surface-container-low p-6 rounded-xl space-y-6">
+<h3 class="text-xs font-semibold tracking-[0.05em] uppercase text-on-surface-variant border-b border-surface-variant pb-2">Technische Details</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-1">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="kilometerstand">Aktueller Kilometerstand</label>
+<div class="relative">
+<input class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow font-['Geist'] tabular-nums pr-12" id="kilometerstand" type="text" value="45.200"/>
+<span class="absolute right-4 top-3 text-on-surface-variant text-sm">km</span>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[0.75rem] font-semibold text-on-surface-variant block mb-1" for="kraftstoff">Antriebsart</label>
+<select class="w-full bg-surface-container-high border-none rounded-lg text-on-surface px-4 py-3 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-low transition-shadow appearance-none" id="kraftstoff">
+<option selected="" value="elektro">Elektro</option>
+<option value="benzin">Benzin</option>
+<option value="diesel">Diesel</option>
+<option value="hybrid">Hybrid</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex justify-end gap-4 pt-4 border-t border-surface-variant">
+<button class="px-6 py-3 rounded-xl text-sm font-medium text-primary hover:bg-primary-fixed-dim/20 transition-colors bg-transparent ghost-border" type="button">Abbrechen</button>
+<button class="px-6 py-3 rounded-xl text-sm font-medium text-on-primary bg-primary hover:bg-primary-fixed-dim transition-colors bg-gradient-to-b from-primary to-primary-container shadow-sm" type="submit">Speichern</button>
+</div>
+</form>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full flex flex-col items-center gap-4 text-center px-4 py-8 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 flat text-[10px] uppercase tracking-wider font-semibold text-gray-500 mt-auto">
+<p>KFZ-Tracker — Open Source für den deutschsprachigen Raum</p>
+<div class="flex gap-6">
+<a class="text-gray-400 hover:text-gray-600 underline underline-offset-4 opacity-80 hover:opacity-100" href="#">Impressum</a>
+<a class="text-gray-400 hover:text-gray-600 underline underline-offset-4 opacity-80 hover:opacity-100" href="#">Datenschutz</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/20 flex justify-around py-3 z-50">
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="text-[10px] font-medium mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+<span class="text-[10px] font-bold mt-1">Fahrzeuge</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">payments</span>
+<span class="text-[10px] font-medium mt-1">Kosten</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">calendar_today</span>
+<span class="text-[10px] font-medium mt-1">Termine</span>
+</a>
+</div>
+</body></html>

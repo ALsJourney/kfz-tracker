@@ -11,16 +11,21 @@ export function CostTile({
 }) {
   if (highlight) {
     return (
-      <div className="bg-blue-50 rounded-xl border border-blue-200 p-4 text-center">
-        <div className="text-xs text-blue-600 mb-1">{label}</div>
-        <div className="font-bold text-blue-700 text-lg">{formatEuro(amount)}</div>
+      <div className="bg-primary p-5 rounded-xl shadow-[0_10px_30px_-10px_rgba(26,86,219,0.5)] flex flex-col justify-between bg-gradient-to-br from-primary to-primary-container text-on-primary">
+        <span className="label-md text-on-primary/80 mb-2 block">{label}</span>
+        <span className="text-3xl font-bold font-geist tracking-tight" style={{ fontVariantNumeric: "tabular-nums" }}>
+          {formatEuro(amount)}
+        </span>
       </div>
     );
   }
+
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-      <div className="text-xs text-gray-500 mb-1">{label}</div>
-      <div className="font-bold text-gray-900">{formatEuro(amount)}</div>
+    <div className="bg-surface-container-lowest p-5 rounded-xl ring-1 ring-outline-variant/10 shadow-sm flex flex-col">
+      <span className="label-md text-outline mb-2">{label}</span>
+      <span className="text-2xl font-bold text-on-surface font-geist" style={{ fontVariantNumeric: "tabular-nums" }}>
+        {formatEuro(amount)}
+      </span>
     </div>
   );
 }

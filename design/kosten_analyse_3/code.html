@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kosten-Analyse - KFZ-Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#ffd4c5",
+                        "on-tertiary-fixed": "#380d00",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-container": "#d4dcff",
+                        "outline": "#737686",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-bright": "#f8f9fa",
+                        "on-background": "#191c1d",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed-variant": "#334479",
+                        "inverse-surface": "#2e3132",
+                        "tertiary-container": "#ad3b00",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d9dadb",
+                        "secondary-container": "#b1c2ff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#1a56db",
+                        "primary": "#003fb1",
+                        "surface-variant": "#e1e3e4",
+                        "secondary-fixed-dim": "#b5c4ff",
+                        "on-surface-variant": "#434654",
+                        "secondary": "#4b5c92",
+                        "on-primary-fixed": "#00174d",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#003dab",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed": "#01174b",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#3d4e84",
+                        "secondary-fixed": "#dbe1ff",
+                        "outline-variant": "#c3c5d7",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-container": "#edeeef",
+                        "surface-tint": "#1353d8",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b5c4ff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface": "#f8f9fa",
+                        "tertiary": "#852b00",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Geist", "sans-serif"],
+                        "body": ["Geist", "sans-serif"],
+                        "label": ["Geist", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Geist', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col lg:flex-row">
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden lg:flex flex-col fixed left-0 top-0 h-full p-4 w-64 border-r border-slate-100 bg-white shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] z-50">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+</div>
+<div>
+<h2 class="text-lg font-bold text-[#1A56DB]">Kosten-Analyse</h2>
+<p class="text-xs text-on-surface-variant font-medium">Präzisions-Monitoring</p>
+</div>
+</div>
+<ul class="flex flex-col gap-2 flex-grow">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-[#1A56DB] rounded-[0.625rem] font-semibold transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="text-sm">Analyse</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span class="text-sm">Reparaturen</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="text-sm">Trends</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+<span class="text-sm">Fahrzeuge</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+<span class="text-sm">Export</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto flex flex-col gap-4">
+<button class="w-full py-2.5 px-4 bg-primary text-on-primary rounded-[0.625rem] font-medium text-sm flex items-center justify-center gap-2 hover:bg-primary-fixed-dim transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                Bericht erstellen
+            </button>
+<ul class="flex flex-col gap-1 border-t border-slate-100 pt-4">
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span class="text-xs">Hilfe</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-2 text-[#434654] hover:bg-slate-50 rounded-[0.625rem] font-medium transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+<span class="text-xs">Abmelden</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- TopNavBar (Mobile / Top context) -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-6 py-4 w-full max-w-full bg-[#F9FAFB] lg:hidden shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
+<div class="text-xl font-bold tracking-tight text-[#1A56DB]">KFZ-Tracker</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#434654] font-medium hover:text-[#1A56DB] transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-[#434654] font-medium hover:text-[#1A56DB] transition-colors duration-200" href="#">Fahrzeuge</a>
+<a class="text-[#1A56DB] font-semibold border-b-2 border-[#1A56DB] pb-1" href="#">Kosten</a>
+<a class="text-[#434654] font-medium hover:text-[#1A56DB] transition-colors duration-200" href="#">Fahrtenbuch</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="Nutzerprofil" class="w-8 h-8 rounded-full border border-surface-container-high" data-alt="portrait of a professional man with short hair wearing a blue shirt smiling softly against a light gray background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXYRrEGNzMUd-oMZTpdK8r5bEijfeE1VnjcW1mOubVW5mGrWwEcgA2FRnyDejmki_TNC050H357Yc5n3RHcWxK6SUid3IFRdyeMcUkz4edi9zd_8_UX6OPZta192KE8GMDuZeGaisAoJqR_qLpubZG6KuZzlPbT0-pwYBlFhmuNm1Zw1KEdEMAtu6mzrey3lICXDaQzLM2udHT4LWCTfSFnRJEphIqNBGHRSrgz1SfMDc2qH3T_bJCLKvxpyxdLpHeyixgQqYA8jA"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-4 md:p-8 flex flex-col gap-8 w-full max-w-7xl mx-auto pb-24 lg:pb-8">
+<!-- Header & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-2">
+<div>
+<h1 class="text-2xl md:text-[1.5rem] font-semibold text-on-surface tracking-tight">Kosten-Analyse</h1>
+<p class="text-on-surface-variant text-sm mt-1">Detaillierte Übersicht aller fahrzeugbezogenen Ausgaben.</p>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto">
+<div class="relative w-full md:w-48">
+<select class="w-full appearance-none bg-surface-container-lowest border-0 ring-1 ring-outline-variant/30 rounded-lg py-2 pl-4 pr-10 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary shadow-sm">
+<option>Letzte 12 Monate</option>
+<option>Dieses Jahr</option>
+<option>Letztes Jahr</option>
+<option>Benutzerdefiniert</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div><div class="relative w-full md:w-56">
+<select class="w-full appearance-none bg-surface-container-lowest border-0 ring-1 ring-outline-variant/30 rounded-lg py-2 pl-4 pr-10 text-sm font-medium text-on-surface focus:ring-2 focus:ring-primary shadow-sm">
+<option>Alle Fahrzeuge</option>
+<option>VW Golf VIII (B-A 1234)</option>
+<option>VW Crafter (M-VW 1234)</option>
+<option>Mercedes Sprinter (HH-AB 9012)</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+<div class="relative group">
+<button class="flex items-center gap-2 bg-surface-container-lowest border-0 ring-1 ring-outline-variant/30 rounded-lg py-2 px-4 text-sm font-medium text-on-surface hover:bg-surface-container-low transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">download</span>
+            Exportieren
+            <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-slate-100 py-1 z-50 hidden group-hover:block">
+<button class="w-full flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">picture_as_pdf</span>
+                PDF Bericht
+            </button>
+<button class="w-full flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">csv</span>
+                CSV Datensatz
+            </button>
+<button class="w-full flex items-center gap-3 px-4 py-2 text-sm text-on-surface hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">table_chart</span>
+                Excel Tabelle
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- KPIs Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
+<span class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider">Gesamtkosten</span>
+<div class="flex items-baseline gap-2">
+<span class="text-[2.75rem] font-bold text-on-surface tracking-tight leading-none">24.590</span>
+<span class="text-lg font-medium text-on-surface-variant">€</span>
+</div>
+<div class="flex items-center gap-1 text-sm font-medium text-[#10b981] mt-2">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_downward">arrow_downward</span>
+<span>-4.2% im Vergleich zum Vorjahr</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-secondary/5 rounded-full blur-2xl group-hover:bg-secondary/10 transition-colors"></div>
+<span class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider">Durchschnitt pro Monat</span>
+<div class="flex items-baseline gap-2">
+<span class="text-[2.75rem] font-bold text-on-surface tracking-tight leading-none">2.049</span>
+<span class="text-lg font-medium text-on-surface-variant">€</span>
+</div>
+<div class="flex items-center gap-1 text-sm font-medium text-on-surface-variant mt-2">
+<span class="material-symbols-outlined text-sm" data-icon="timeline">timeline</span>
+<span>Stabil über 12 Monate</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-tertiary/5 rounded-full blur-2xl group-hover:bg-tertiary/10 transition-colors"></div>
+<span class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider">Teuerstes Fahrzeug</span>
+<div class="flex items-baseline gap-2">
+<span class="text-xl font-bold text-on-surface tracking-tight truncate">M-VW 1234</span>
+</div>
+<div class="flex items-center gap-2 mt-auto pt-4 border-t border-surface-container-low">
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-on-surface">VW Crafter (2021)</span>
+<span class="text-xs text-on-surface-variant">8.450 € gesamt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Line Chart (Kostenverlauf) -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h3 class="text-[1.125rem] font-medium text-on-surface">Kostenverlauf über die Zeit</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<!-- Mock Chart Visual -->
+<div class="w-full h-64 flex items-end gap-2 relative pt-8">
+<!-- Y-Axis labels mock -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-on-surface-variant pb-8 pr-4 border-r border-surface-container-low">
+<span>3k €</span>
+<span>2k €</span>
+<span>1k €</span>
+<span>0 €</span>
+</div>
+<div class="flex-1 flex items-end justify-between ml-12 h-full pb-8 relative">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="w-full border-b border-outline-variant"></div>
+<div class="w-full border-b border-outline-variant"></div>
+<div class="w-full border-b border-outline-variant"></div>
+<div class="w-full border-b border-outline-variant"></div>
+</div>
+<!-- Data Bars (Abstracting line chart for HTML mock) -->
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[40%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Jan</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[45%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Feb</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[60%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Mär</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[30%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Apr</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[50%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Mai</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[75%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Jun</div></div>
+<div class="w-[6%] bg-primary rounded-t-sm h-[90%] relative group transition-all shadow-md"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-semibold text-primary">Jul</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[55%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Aug</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[40%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Sep</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[65%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Okt</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[45%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Nov</div></div>
+<div class="w-[6%] bg-primary/20 hover:bg-primary/40 rounded-t-sm h-[35%] relative group transition-all"><div class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-on-surface-variant">Dez</div></div>
+</div>
+</div>
+</div>
+<!-- Donut Chart (Kategorien) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h3 class="text-[1.125rem] font-medium text-on-surface">Kategorien</h3>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center gap-6">
+<!-- Abstract Donut Visual via CSS -->
+<div class="relative w-40 h-40 rounded-full border-[16px] border-surface-container-low flex items-center justify-center" style="border-color: #f3f4f5; border-top-color: #1A56DB; border-right-color: #1A56DB; border-bottom-color: #b1c2ff; transform: rotate(-45deg);">
+<div class="absolute inset-0 rounded-full border-[16px] border-transparent" style="border-left-color: #4b5c92; transform: rotate(45deg);"></div>
+<div class="text-center" style="transform: rotate(45deg);">
+<span class="block text-sm text-on-surface-variant">Kraftstoff</span>
+<span class="block text-xl font-bold text-on-surface">45%</span>
+</div>
+</div>
+<div class="w-full flex flex-col gap-3 mt-4">
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#1A56DB]"></div>
+<span class="text-on-surface-variant">Kraftstoff</span>
+</div>
+<span class="font-medium text-on-surface">11.065 €</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#b1c2ff]"></div>
+<span class="text-on-surface-variant">Versicherung</span>
+</div>
+<span class="font-medium text-on-surface">6.147 €</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#4b5c92]"></div>
+<span class="text-on-surface-variant">Reparaturen</span>
+</div>
+<span class="font-medium text-on-surface">4.918 €</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-[#e1e3e4]"></div>
+<span class="text-on-surface-variant">Wartung</span>
+</div>
+<span class="font-medium text-on-surface">2.460 €</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Large Expenses Table -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] ring-1 ring-outline-variant/10 flex flex-col gap-4">
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-[1.125rem] font-medium text-on-surface">Letzte große Ausgaben</h3>
+<button class="text-sm font-medium text-primary hover:text-primary-fixed-dim transition-colors flex items-center gap-1">
+                    Alle anzeigen <span class="material-symbols-outlined text-[1rem]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead>
+<tr class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider border-b border-surface-container-low">
+<th class="pb-3 px-2 font-['Geist']">Datum</th>
+<th class="pb-3 px-2 font-['Geist']">Fahrzeug</th>
+<th class="pb-3 px-2 font-['Geist']">Beschreibung</th>
+<th class="pb-3 px-2 font-['Geist'] text-right">Betrag</th>
+<th class="pb-3 px-2 font-['Geist'] w-10"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low text-on-surface">
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="py-4 px-2">12. Okt 2023</td>
+<td class="py-4 px-2 font-medium">B-CD 5678</td>
+<td class="py-4 px-2 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#4b5c92]"></span>
+                                    Getriebeaustausch
+                                </div>
+</td>
+<td class="py-4 px-2 text-right font-medium">2.450,00 €</td>
+<td class="py-4 px-2 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[1.125rem]" data-icon="receipt_long">receipt_long</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="py-4 px-2">28. Sep 2023</td>
+<td class="py-4 px-2 font-medium">M-VW 1234</td>
+<td class="py-4 px-2 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#b1c2ff]"></span>
+                                    Versicherungspolice (Jährlich)
+                                </div>
+</td>
+<td class="py-4 px-2 text-right font-medium">1.280,00 €</td>
+<td class="py-4 px-2 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[1.125rem]" data-icon="receipt_long">receipt_long</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="py-4 px-2">15. Aug 2023</td>
+<td class="py-4 px-2 font-medium">HH-AB 9012</td>
+<td class="py-4 px-2 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#4b5c92]"></span>
+                                    Reifensatz (Winter) inkl. Montage
+                                </div>
+</td>
+<td class="py-4 px-2 text-right font-medium">850,00 €</td>
+<td class="py-4 px-2 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-[1.125rem]" data-icon="receipt_long">receipt_long</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe pt-2 bg-white/85 dark:bg-slate-900/85 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-[#434654] dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 tap-highlight-transparent active:scale-90 transition-transform px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-blue-50 dark:bg-blue-900/40 text-[#1A56DB] dark:text-blue-300 rounded-xl px-4 py-2 tap-highlight-transparent active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="euro" data-weight="fill">euro</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider mt-1">Kosten</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#434654] dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 tap-highlight-transparent active:scale-90 transition-transform px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider mt-1">Fahrzeuge</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#434654] dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 tap-highlight-transparent active:scale-90 transition-transform px-4 py-2 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider mt-1">Mehr</span>
+</a>
+</nav>
+</body></html>

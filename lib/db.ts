@@ -68,9 +68,36 @@ function initSchema(db: Database.Database) {
       aktualisiert_am TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
+    CREATE TABLE IF NOT EXISTS _migrations (
+      name TEXT PRIMARY KEY
+    );
+
     CREATE INDEX IF NOT EXISTS idx_probleme_fahrzeug ON probleme(fahrzeug_id);
     CREATE INDEX IF NOT EXISTS idx_teile_fahrzeug ON teile(fahrzeug_id);
   `);
+
+  const migrated = db.prepare("SELECT 1 FROM _migrations WHERE name = ?").get("tuev_datum_yyyy_mm");
+  if (!migrated) {
+    db.exec(`
+      UPDATE fahrzeuge SET tuev_datum = SUBSTR(tuev_datum, 1, 7)
+      WHERE tuev_datum IS NOT NULL AND LENGTH(tuev_datum) = 10;
+    `);
+    db.prepare("INSERT INTO _migrations (name) VALUES (?)").run("tuev_datum_yyyy_mm");
+  }
+
+  const newFields = db.prepare("SELECT 1 FROM _migrations WHERE name = ?").get("add_vehicle_extended_fields");
+  if (!newFields) {
+    const cols = db.prepare("PRAGMA table_info(fahrzeuge)").all() as { name: string }[];
+    const existing = new Set(cols.map(c => c.name));
+    if (!existing.has('fin')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN fin TEXT`);
+    if (!existing.has('antriebsart')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN antriebsart TEXT`);
+    if (!existing.has('versicherung_name')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN versicherung_name TEXT`);
+    if (!existing.has('versicherung_nummer')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN versicherung_nummer TEXT`);
+    if (!existing.has('versicherung_aktiv')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN versicherung_aktiv INTEGER DEFAULT 1`);
+    if (!existing.has('letzter_service')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN letzter_service TEXT`);
+    if (!existing.has('naechster_service')) db.exec(`ALTER TABLE fahrzeuge ADD COLUMN naechster_service TEXT`);
+    db.prepare("INSERT INTO _migrations (name) VALUES (?)").run("add_vehicle_extended_fields");
+  }
 }
 
 export type Fahrzeug = {
@@ -84,6 +111,13 @@ export type Fahrzeug = {
   kilometerstand: number;
   tuev_datum: string | null;
   notizen: string | null;
+  fin: string | null;
+  antriebsart: string | null;
+  versicherung_name: string | null;
+  versicherung_nummer: string | null;
+  versicherung_aktiv: number;
+  letzter_service: string | null;
+  naechster_service: string | null;
   erstellt_am: string;
   aktualisiert_am: string;
 };

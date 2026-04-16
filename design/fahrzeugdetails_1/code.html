@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KFZ-Tracker - Fahrzeug Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f8f9fa",
+                      "tertiary": "#852b00",
+                      "secondary-fixed": "#dbe1ff",
+                      "primary-fixed-dim": "#b5c4ff",
+                      "on-secondary-fixed": "#01174b",
+                      "surface-container-high": "#e7e8e9",
+                      "on-primary-fixed": "#00174d",
+                      "on-tertiary-container": "#ffd4c5",
+                      "tertiary-container": "#ad3b00",
+                      "on-secondary-container": "#3d4e84",
+                      "primary-container": "#1a56db",
+                      "on-surface": "#191c1d",
+                      "on-background": "#191c1d",
+                      "background": "#f8f9fa",
+                      "tertiary-fixed": "#ffdbcf",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#d9dadb",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-secondary-fixed-variant": "#334479",
+                      "on-primary-fixed-variant": "#003dab",
+                      "inverse-surface": "#2e3132",
+                      "surface-tint": "#1353d8",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#ffb59a",
+                      "outline": "#737686",
+                      "surface": "#f8f9fa",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#dbe1ff",
+                      "on-tertiary-fixed": "#380d00",
+                      "secondary-container": "#b1c2ff",
+                      "secondary": "#4b5c92",
+                      "inverse-primary": "#b5c4ff",
+                      "surface-container": "#edeeef",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "outline-variant": "#c3c5d7",
+                      "on-surface-variant": "#434654",
+                      "on-primary-container": "#d4dcff",
+                      "on-tertiary-fixed-variant": "#802a00",
+                      "on-primary": "#ffffff",
+                      "primary": "#003fb1",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#f3f4f5",
+                      "secondary-fixed-dim": "#b5c4ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-64 bg-surface dark:bg-surface-dim tonal-shift via bg-surface-container-low dark:bg-surface-container-high no-shadows p-4 border-r-0">
+<div class="mb-8 px-4">
+<h1 class="text-lg font-bold text-primary font-headline">KFZ-Tracker</h1>
+<p class="text-sm font-medium font-body text-on-surface-variant">Präzisions-Navigator</p>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-transform tap-highlight-transparent font-['Geist'] text-sm font-medium rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 text-outline group-hover:text-primary">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center px-4 py-3 bg-primary-fixed dark:bg-primary-fixed-dim text-on-primary-fixed dark:text-primary font-['Geist'] text-sm font-medium rounded-lg tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+                Fahrzeuge
+            </a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-transform tap-highlight-transparent font-['Geist'] text-sm font-medium rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 text-outline group-hover:text-primary">payments</span>
+                Kosten
+            </a>
+<a class="flex items-center px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-transform tap-highlight-transparent font-['Geist'] text-sm font-medium rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 text-outline group-hover:text-primary">calendar_today</span>
+                Termine
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- TopNavBar (Mobile Only for simplicity here, normally responsive) -->
+<header class="md:hidden w-full z-50 flex justify-between items-center px-6 py-4 bg-surface-bright/85 backdrop-blur-xl shadow-[0_20px_40px_-12px_rgba(26,86,219,0.08)] bg-surface-container-low border-b-0">
+<h1 class="text-xl font-bold tracking-tight text-primary font-headline">🚗 KFZ-Tracker</h1>
+</header>
+<div class="flex-1 p-6 lg:p-12 max-w-7xl mx-auto w-full space-y-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<a class="text-on-surface-variant hover:text-primary transition-colors flex items-center" href="#">
+<span class="material-symbols-outlined text-sm mr-1">arrow_back</span>
+<span class="text-sm font-medium font-body">Zurück zu Fahrzeuge</span>
+</a>
+</div>
+<h2 class="text-3xl font-bold text-on-surface font-headline flex items-center gap-3">
+                        Volkswagen Golf VIII
+                        <span class="px-2.5 py-1 bg-surface-container-low text-on-surface-variant text-xs font-semibold rounded-DEFAULT uppercase tracking-wider font-label border ring-1 ring-outline-variant/10">B-A 1234</span>
+</h2>
+<p class="text-on-surface-variant mt-1 font-body">Kompaktklasse • 2.0 TDI</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 rounded-lg font-medium font-body text-sm bg-surface-container-lowest text-on-surface ring-1 ring-outline-variant/20 hover:bg-surface-container-low transition-colors flex items-center gap-2 shadow-[0_2px_10px_-4px_rgba(0,63,177,0.05)]">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Bearbeiten
+                    </button>
+<button class="px-5 py-2.5 rounded-lg font-medium font-body text-sm bg-primary text-on-primary hover:bg-primary-fixed-dim hover:text-on-primary-fixed transition-colors flex items-center gap-2 shadow-[0_4px_14px_0_rgba(26,86,219,0.39)] bg-gradient-to-b from-primary to-primary-container">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Eintrag
+                    </button>
+</div>
+</div>
+<!-- TÜV Banner (Warning) -->
+<div class="bg-[#FFF8E1] dark:bg-[#FFF8E1]/10 rounded-xl p-4 flex items-start gap-4 ring-1 ring-[#FFC107]/20 shadow-sm">
+<div class="p-2 bg-[#FFECB3] rounded-DEFAULT text-[#FF8F00] mt-0.5">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1">
+<h3 class="text-sm font-semibold text-[#FF8F00] font-headline uppercase tracking-wide">TÜV fällig</h3>
+<p class="text-sm text-[#FF8F00]/80 font-body mt-1">Die Hauptuntersuchung für dieses Fahrzeug läuft in 14 Tagen ab (01.11.2023).</p>
+</div>
+<button class="text-sm font-medium text-[#FF8F00] hover:underline self-center px-3 py-1.5">Termin buchen</button>
+</div>
+<!-- Bento Grid: Main Info -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Vehicle Image -->
+<div class="col-span-1 md:col-span-1 rounded-xl bg-surface-container-lowest shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] overflow-hidden ring-1 ring-outline-variant/10 flex flex-col">
+<div class="h-48 bg-surface-container-high relative">
+<img alt="White Volkswagen Golf parked in a modern minimalist garage setting with soft lighting" class="w-full h-full object-cover mix-blend-multiply opacity-90" data-alt="White Volkswagen Golf parked in a modern minimalist garage setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjdBIDBD2kGHonR26_0x-h-DTPWmCI_OzDTyMgPraMaGkrd2jeAFw5dtwq9EyeuOeBlY0cYBWRDB8VFrA580rkBnHKIDs-x81n9Fha1NIbQ8BJzgUnMC2_LM7CYnLrHnrtJh5MKMQkD2Md27Aub6xSZ1ffwF52iBi25WOT7AfxlUn2g6xfAJw21ykavSEEcX8CjM7rXBHWXHhjU3DzHgYd_pDy4KoV2CMJwSumAcOtZ_4edwmcznAgEsPeFht5rOEBO9O7dj5czVI"/>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between">
+<div>
+<p class="text-xs font-semibold text-outline font-label uppercase tracking-wider mb-1">FIN / Chassis</p>
+<p class="text-sm font-medium text-on-surface font-body font-mono">WVWZZZ1JZ12345678</p>
+</div>
+<div class="mt-4 pt-4 border-t border-surface-container-low">
+<p class="text-xs font-semibold text-outline font-label uppercase tracking-wider mb-1">Erstzulassung</p>
+<p class="text-sm font-medium text-on-surface font-body">14. Mai 2020</p>
+</div>
+</div>
+</div>
+<!-- Stats & Data Cards -->
+<div class="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Kilometerstand -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2.5 bg-secondary-fixed rounded-DEFAULT text-on-secondary-fixed">
+<span class="material-symbols-outlined">speed</span>
+</div>
+<h3 class="text-sm font-semibold text-outline font-label uppercase tracking-wider">Kilometerstand</h3>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-surface font-headline tabular-nums tracking-tight">42.500</span>
+<span class="text-lg font-medium text-on-surface-variant font-body">km</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 font-body flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">update</span>
+                            Aktualisiert vor 2 Tagen
+                        </p>
+</div>
+<!-- Versicherung -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2.5 bg-primary-fixed rounded-DEFAULT text-on-primary-fixed">
+<span class="material-symbols-outlined">shield</span>
+</div>
+<h3 class="text-sm font-semibold text-outline font-label uppercase tracking-wider">Versicherung</h3>
+</div>
+<p class="text-lg font-medium text-on-surface font-body">Allianz Vollkasko</p>
+<p class="text-sm text-on-surface-variant mt-1 font-body">Police: #ALZ-9982-DE</p>
+<div class="mt-4 inline-flex items-center px-2.5 py-1 rounded-DEFAULT bg-[#E8F5E9] text-[#2E7D32] text-xs font-semibold uppercase tracking-wider w-max">
+                            Aktiv
+                        </div>
+</div>
+<!-- Letzter Service -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2.5 bg-surface-container-low rounded-DEFAULT text-on-surface-variant">
+<span class="material-symbols-outlined">build</span>
+</div>
+<h3 class="text-sm font-semibold text-outline font-label uppercase tracking-wider">Letzter Service</h3>
+</div>
+<p class="text-lg font-medium text-on-surface font-body">12. März 2023</p>
+<p class="text-sm text-on-surface-variant mt-1 font-body">bei 38.200 km (Ölwechsel)</p>
+</div>
+<!-- Nächster Service -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2.5 bg-surface-container-low rounded-DEFAULT text-on-surface-variant">
+<span class="material-symbols-outlined">event</span>
+</div>
+<h3 class="text-sm font-semibold text-outline font-label uppercase tracking-wider">Nächster Service</h3>
+</div>
+<p class="text-lg font-medium text-on-surface font-body">ca. März 2024</p>
+<p class="text-sm text-on-surface-variant mt-1 font-body">oder bei 50.000 km</p>
+</div>
+</div>
+</div>
+<!-- Two Column Layout: Problems & Spare Parts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Problems Section -->
+<section class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-semibold text-on-surface font-headline">Gemeldete Probleme</h3>
+<button class="text-sm font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Problem hinzufügen
+                        </button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 overflow-hidden">
+<!-- Problem Item -->
+<div class="p-5 hover:bg-surface-container-low transition-colors flex items-start gap-4">
+<div class="p-2 bg-[#FFEBEE] rounded-DEFAULT text-[#C62828] mt-1 shrink-0">
+<span class="material-symbols-outlined text-[20px]">report_problem</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-base font-medium text-on-surface font-body">Bremsbeläge vorne abgenutzt</h4>
+<span class="px-2 py-0.5 bg-[#FFEBEE] text-[#C62828] text-[10px] font-semibold rounded-DEFAULT uppercase tracking-wider">Offen</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body mb-2">Quietschen beim Bremsen, Sichtprüfung zeigt geringe Belagstärke.</p>
+<p class="text-xs text-outline font-body">Gemeldet am 15.10.2023</p>
+</div>
+</div>
+<!-- Problem Item -->
+<div class="p-5 hover:bg-surface-container-low transition-colors flex items-start gap-4 border-t border-surface-container-low">
+<div class="p-2 bg-[#FFF3E0] rounded-DEFAULT text-[#EF6C00] mt-1 shrink-0">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-base font-medium text-on-surface font-body">Steinschlag Windschutzscheibe</h4>
+<span class="px-2 py-0.5 bg-[#FFF3E0] text-[#EF6C00] text-[10px] font-semibold rounded-DEFAULT uppercase tracking-wider">In Bearbeitung</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body mb-2">Kleiner Riss auf der Beifahrerseite, Termin bei Carglass vereinbart.</p>
+<p class="text-xs text-outline font-body">Gemeldet am 10.10.2023</p>
+</div>
+</div>
+<!-- Problem Item -->
+<div class="p-5 hover:bg-surface-container-low transition-colors flex items-start gap-4 border-t border-surface-container-low opacity-75">
+<div class="p-2 bg-[#E8F5E9] rounded-DEFAULT text-[#2E7D32] mt-1 shrink-0">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="text-base font-medium text-on-surface font-body line-through">Klimaanlage kühlt nicht</h4>
+<span class="px-2 py-0.5 bg-[#E8F5E9] text-[#2E7D32] text-[10px] font-semibold rounded-DEFAULT uppercase tracking-wider">Gelöst</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body mb-2">Kühlmittel wurde nachgefüllt und System auf Dichtigkeit geprüft.</p>
+<p class="text-xs text-outline font-body">Behoben am 28.08.2023</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Spare Parts Section -->
+<section class="flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<h3 class="text-xl font-semibold text-on-surface font-headline">Ersatzteile &amp; Wartung</h3>
+<button class="text-sm font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Teil erfassen
+                        </button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 overflow-hidden">
+<!-- Part Item -->
+<div class="p-4 hover:bg-surface-container-low transition-colors flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
+</div>
+<div>
+<h4 class="text-sm font-medium text-on-surface font-body">Starterbatterie VARTA Silver Dynamic</h4>
+<p class="text-xs text-on-surface-variant mt-0.5 font-body">Eingebaut am 12.03.2023</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-sm font-semibold text-on-surface tabular-nums">145,00 €</span>
+</div>
+</div>
+<!-- Part Item -->
+<div class="p-4 hover:bg-surface-container-low transition-colors flex items-center justify-between border-t border-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">oil_barrel</span>
+</div>
+<div>
+<h4 class="text-sm font-medium text-on-surface font-body">Motoröl 5W-30 Longlife III (5L)</h4>
+<p class="text-xs text-on-surface-variant mt-0.5 font-body">Gekauft am 10.03.2023</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-sm font-semibold text-on-surface tabular-nums">54,90 €</span>
+</div>
+</div>
+<!-- Part Item -->
+<div class="p-4 hover:bg-surface-container-low transition-colors flex items-center justify-between border-t border-surface-container-low">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">air_freshener</span>
+</div>
+<div>
+<h4 class="text-sm font-medium text-on-surface font-body">Innenraumfilter Aktivkohle</h4>
+<p class="text-xs text-on-surface-variant mt-0.5 font-body">Eingebaut am 28.08.2023</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-sm font-semibold text-on-surface tabular-nums">28,50 €</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low text-center border-t border-outline-variant/10">
+<a class="text-xs font-semibold text-primary uppercase tracking-wider hover:underline" href="#">Alle Ersatzteile anzeigen</a>
+</div>
+</div>
+</section>
+</div>
+<!-- Cost Summary Section -->
+<section class="pt-4 pb-8">
+<h3 class="text-xl font-semibold text-on-surface font-headline mb-6">Kostenübersicht (Laufendes Jahr)</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-xl ring-1 ring-outline-variant/10 shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-outline font-label uppercase tracking-wider mb-2">Tankkosten</span>
+<span class="text-2xl font-bold text-on-surface font-headline tabular-nums">1.240 €</span>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl ring-1 ring-outline-variant/10 shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-outline font-label uppercase tracking-wider mb-2">Versicherung</span>
+<span class="text-2xl font-bold text-on-surface font-headline tabular-nums">850 €</span>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-xl ring-1 ring-outline-variant/10 shadow-sm flex flex-col">
+<span class="text-xs font-semibold text-outline font-label uppercase tracking-wider mb-2">Wartung &amp; Teile</span>
+<span class="text-2xl font-bold text-on-surface font-headline tabular-nums">420 €</span>
+</div>
+<!-- Highlighted Cost Tile -->
+<div class="bg-primary p-5 rounded-xl shadow-[0_10px_30px_-10px_rgba(26,86,219,0.5)] flex flex-col justify-between bg-gradient-to-br from-primary to-primary-container text-on-primary">
+<div>
+<span class="text-xs font-semibold text-on-primary/80 font-label uppercase tracking-wider mb-2 block">Gesamtkosten YTD</span>
+<span class="text-3xl font-bold font-headline tabular-nums tracking-tight">2.510 €</span>
+</div>
+<div class="mt-4 flex items-center justify-between text-sm">
+<span class="text-on-primary/80">Kosten/Monat</span>
+<span class="font-semibold tabular-nums">~ 251 €</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="w-full flex flex-col items-center gap-4 text-center px-4 py-8 bg-surface-container-low border-t-0 mt-auto">
+<div class="flex gap-6">
+<a class="text-[10px] uppercase tracking-wider font-semibold text-outline hover:text-on-surface-variant transition-colors underline-offset-4 hover:underline" href="#">Impressum</a>
+<a class="text-[10px] uppercase tracking-wider font-semibold text-outline hover:text-on-surface-variant transition-colors underline-offset-4 hover:underline" href="#">Datenschutz</a>
+</div>
+<p class="text-[10px] uppercase tracking-wider font-semibold text-outline opacity-80">KFZ-Tracker — Open Source für den deutschsprachigen Raum</p>
+</footer>
+</main>
+</body></html>

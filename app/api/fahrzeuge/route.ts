@@ -26,8 +26,8 @@ export async function POST(request: Request) {
   const now = new Date().toISOString();
 
   db.prepare(`
-    INSERT INTO fahrzeuge (id, marke, modell, baujahr, kennzeichen, farbe, kaufpreis, kilometerstand, tuev_datum, notizen, erstellt_am, aktualisiert_am)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO fahrzeuge (id, marke, modell, baujahr, kennzeichen, farbe, kaufpreis, kilometerstand, tuev_datum, notizen, fin, antriebsart, versicherung_name, versicherung_nummer, versicherung_aktiv, letzter_service, naechster_service, erstellt_am, aktualisiert_am)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     id,
     body.marke,
@@ -39,6 +39,13 @@ export async function POST(request: Request) {
     body.kilometerstand || 0,
     body.tuev_datum || null,
     body.notizen || null,
+    body.fin || null,
+    body.antriebsart || null,
+    body.versicherung_name || null,
+    body.versicherung_nummer || null,
+    body.versicherung_aktiv ?? 1,
+    body.letzter_service || null,
+    body.naechster_service || null,
     now,
     now
   );

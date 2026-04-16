@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 function acceptHint(accept: string) {
   if (accept.includes("pdf")) return "Erlaubt: Bilder (JPG, PNG, …) und PDF.";
@@ -42,16 +43,16 @@ export default function UploadButton({
   return (
     <div>
       <input ref={ref} type="file" accept={accept} onChange={handleChange} className="hidden" />
-      <button
+      <Button
         type="button"
+        variant="outline"
         onClick={() => ref.current?.click()}
         disabled={uploading}
-        className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition-colors min-h-11"
       >
         {uploading ? "Wird hochgeladen…" : "Datei auswählen"}
-      </button>
-      {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      </Button>
+      {hint && <p className="text-xs text-muted-foreground mt-1">{hint}</p>}
+      {error && <p className="text-xs text-destructive mt-1">{error}</p>}
     </div>
   );
 }

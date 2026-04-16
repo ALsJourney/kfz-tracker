@@ -1,43 +1,48 @@
-import { StatusBadge, tuevDaysUntil } from "@/components/StatusBadge";
+import { tuevDaysUntil } from "@/components/StatusBadge";
+import { formatTuevDatumDisplay } from "@/lib/car-data";
+import { Icon } from "@/components/Icon";
 
 export function TuevBanner({ tuev_datum }: { tuev_datum: string | null }) {
   if (!tuev_datum) return null;
 
+  const country = typeof window !== "undefined" ? localStorage.getItem("app_country") : "DE";
   const days = tuevDaysUntil(tuev_datum);
-  const formatted = new Date(tuev_datum).toLocaleDateString("de-DE");
+  const formatted = formatTuevDatumDisplay(tuev_datum);
+  
+  const gracePeriod = country === "AT" ? 120 : 0;
+  const effectiveDays = days + gracePeriod;
 
-  let containerClass =
-    "rounded-xl p-4 mb-6 flex flex-wrap items-start gap-3 border bg-white border-gray-200";
-  if (days < 0 || days < 30) {
-    containerClass =
-      "rounded-xl p-4 mb-6 flex flex-wrap items-start gap-3 border bg-red-50 border-red-200";
-  } else if (days < 60) {
-    containerClass =
-      "rounded-xl p-4 mb-6 flex flex-wrap items-start gap-3 border bg-yellow-50 border-yellow-200";
-  }
+  const isWarning = effectiveDays >= 30 && effectiveDays < 60;
+  const isDestructive = effectiveDays < 30;
 
-  const badge =
-    days < 0 ? (
-      <StatusBadge variant="tuev_abgelaufen" />
-    ) : days < 30 ? (
-      <StatusBadge variant="tuev_bald" label={`Noch ${Math.ceil(days)} Tage`} />
-    ) : days < 60 ? (
-      <StatusBadge variant="tuev_bald" label={`${Math.ceil(days)} Tage`} />
-    ) : (
-      <StatusBadge variant="tuev_ok" />
-    );
+  if (!isWarning && !isDestructive) return null;
+
+  const containerClass = isDestructive
+    ? "bg-red-50 ring-1 ring-red-200"
+    : "bg-[#FFF8E1] ring-1 ring-[#FFC107]/20";
+
+  const textClass = isDestructive
+    ? "text-red-700"
+    : "text-[#FF8F00]";
+
+  const iconBgClass = isDestructive
+    ? "bg-red-100"
+    : "bg-[#FFECB3]";
 
   return (
-    <div className={containerClass}>
-      <span className="text-2xl" aria-hidden>
-        🔧
-      </span>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-wrap items-center gap-2 mb-1">
-          <div className="text-sm font-medium text-gray-700">TÜV / Pickerl</div>
-          {badge}
-        </div>
-        <div className="text-sm text-gray-600">Fällig am {formatted}</div>
+    <div className={`${containerClass} rounded-xl p-4 flex items-start gap-4 shadow-sm`}>
+      <div className={`p-2 ${iconBgClass} rounded-sm ${textClass} mt-0.5`}>
+        <Icon name="warning" className="w-5 h-5" />
+      </div>
+      <div className="flex-1">
+        <h3 className={`text-sm font-semibold ${textClass} uppercase tracking-wide`}>
+          {country === "AT" && days < 0 ? "Pickerl Nachfrist" : "TÜV fällig"}
+        </h3>
+        <p className={`text-sm ${textClass}/80 mt-1`}>
+          Fällig bis {formatted}
+          {days >= 0 ? ` (in ${Math.ceil(days)} Tagen)` : 
+           country === "AT" ? ` (abgelaufen vor ${Math.abs(Math.ceil(days))} Tagen)` : ""}
+        </p>
       </div>
     </div>
   );

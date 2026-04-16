@@ -1,0 +1,108 @@
+KFZ-Tracker — Application Description
+Overview
+KFZ-Tracker is a German-language single-page web application for private individuals and small businesses to manage their vehicles, track problems/issues, record spare parts, and monitor costs. All UI text is in German.
+Tech Stack
+- Framework: Next.js 16 (App Router, output: "standalone", server components where possible)
+- UI Library: shadcn/ui (base-nova style, using @base-ui/react primitives)
+- Styling: Tailwind CSS 4 + CSS custom properties for theming
+- Language: TypeScript 5
+- Database: better-sqlite3 (file-based SQLite, stored in ./data/kfz-tracker.db)
+- Font: Geist (via next/font/google)
+- IDs: UUID v4
+- Deployment: Docker (Dockerfile + docker-compose.yml)
+Color & Design System
+- Primary: Blue (oklch blue ~260 hue, mapped from #1A56DB)
+- Destructive: Red (for delete/warning actions)
+- Warning: Yellow/orange (for TÜV soon-due banners)
+- Success: Green (for TÜV OK, solved problems)
+- Background: Light gray (#F9FAFB)
+- Cards: White with subtle ring border (ring-1 ring-foreground/10)
+- Radius: 0.625rem base (rounded-xl for cards)
+- All colors defined as CSS custom properties in oklch, with dark mode variants
+Data Model (3 tables + 1 migration table)
+fahrzeuge (Vehicles)
+Column
+id
+marke
+modell
+baujahr
+kennzeichen
+farbe
+kaufpreis
+kilometerstand
+tuev_datum
+notizen
+erstellt_am / aktualisiert_am
+probleme (Problems/Issues)
+Column
+id
+fahrzeug_id
+titel
+beschreibung
+datum
+status
+kosten
+foto_pfad
+teile (Spare Parts)
+Column
+id
+fahrzeug_id
+name
+teilenummer
+hersteller
+preis
+menge
+lieferant
+kaufdatum
+notizen
+rechnung_pfad
+_migrations — tracks which migrations have run (currently: tuev_datum_yyyy_mm which converts existing YYYY-MM-DD values to YYYY-MM)
+Pages & Routes
+Route
+/
+/fahrzeuge/neu
+/fahrzeuge/[id]
+/fahrzeuge/[id]/bearbeiten
+API Routes
+- GET/POST /api/fahrzeuge — list all (with aggregated costs) / create new
+- GET/PATCH/DELETE /api/fahrzeuge/[id] — CRUD single vehicle (PATCH updates all fields)
+- POST/PATCH/DELETE /api/fahrzeuge/[id]/probleme — problem CRUD (PATCH/DELETE use ?problemId= query param)
+- POST/PATCH/DELETE /api/fahrzeuge/[id]/teile — parts CRUD (PATCH/DELETE use ?teilId= query param)
+- POST /api/upload — file upload (images + PDF, max 10MB, stored in ./data/uploads/)
+- GET /uploads/[...path] — serve uploaded files (path-traversal protected)
+UI Components
+shadcn/ui primitives used: Button, Card, Input, Label, Select, Textarea, AlertDialog, Badge, Separator
+Custom components:
+- VehicleForm — shared form for new/edit vehicle. Uses shadcn Select dropdowns for Marke→Modell (dependent), Baujahr, Farbe, and TÜV (Monat+Jahr). Falls back to free text Input for models when brand has no preset list.
+- StatusBadge — wrapped shadcn Badge with 6 color variants (offen/red, in_bearbeitung/yellow, geloest/green, tuev_ok/green, tuev_bald/yellow, tuev_abgelaufen/red). Contains tuevDaysUntil() helper that calculates days remaining using last day of month for YYYY-MM format.
+- TuevBanner — color-coded card (red <30 days, yellow 30-59 days, neutral 60+). Displays "Fällig bis Month Year".
+- CostTile — card displaying a cost amount. Blue-highlighted variant for "Gesamt investiert".
+- EmptyState — card with emoji icon, title, description, and optional CTA button.
+- ConfirmDialog — wrapped shadcn AlertDialog with danger/warning variants.
+- UploadButton — file upload button using hidden input + shadcn Button.
+Layout Structure
+┌──────────────────────────────────────────────────┐
+│ HEADER                                            │
+│  🚗 KFZ-Tracker            [+ Fahrzeug hinzufügen]│
+├──────────────────────────────────────────────────┤
+│ MAIN (max-w-5xl, px-4, py-8)                     │
+│ {page content}                                    │
+├──────────────────────────────────────────────────┤
+│ FOOTER                                            │
+│  KFZ-Tracker — Open Source für den deutschsprachigen Raum │
+└──────────────────────────────────────────────────┘
+Key UX Patterns
+- Vehicle cards are clickable links to detail page with hover border effect
+- Problem status flow: Offen → In Bearbeitung → Gelöst (buttons to advance status)
+- Inline forms: Problems and parts forms appear inline (toggled by button), not on separate pages
+- Delete confirmations: All destructive actions use AlertDialog
+- TÜV awareness: Color-coded badges and banners throughout; days-remaining calculation based on last day of the expiry month
+- Responsive: Mobile-first, 1-column on small screens, 2-column grid on md: breakpoint
+- All monetary values formatted as Euro via Intl.NumberFormat("de-DE")
+Car Data Constants (lib/car-data.ts)
+- MARKEN: 24 European brands (VW, BMW, Mercedes, Audi, Opel, Ford, Toyota, Renault, Fiat, Skoda, Seat, Peugeot, Hyundai, Kia, Mazda, Honda, Nissan, Volvo, Porsche, Mini, Suzuki, Dacia, Smart, Citroen)
+- MODELLE: Record mapping each brand to ~5-15 popular models
+- FARBEN: 12 colors in German
+- BAUJAHR_RANGE: 1970 to next year (reverse order)
+- MONATE: 01–12 with German labels
+- TUEV_JAHRE: current year to +10

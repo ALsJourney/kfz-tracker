@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="de"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neues Fahrzeug - KFZ-Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary": "#852b00",
+                        "secondary-fixed": "#dbe1ff",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-secondary-fixed": "#01174b",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-fixed": "#00174d",
+                        "on-tertiary-container": "#ffd4c5",
+                        "tertiary-container": "#ad3b00",
+                        "on-secondary-container": "#3d4e84",
+                        "primary-container": "#1a56db",
+                        "on-surface": "#191c1d",
+                        "on-background": "#191c1d",
+                        "background": "#f8f9fa",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary-fixed-variant": "#334479",
+                        "on-primary-fixed-variant": "#003dab",
+                        "inverse-surface": "#2e3132",
+                        "surface-tint": "#1353d8",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "outline": "#737686",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary-fixed": "#380d00",
+                        "secondary-container": "#b1c2ff",
+                        "secondary": "#4b5c92",
+                        "inverse-primary": "#b5c4ff",
+                        "surface-container": "#edeeef",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#c3c5d7",
+                        "on-surface-variant": "#434654",
+                        "on-primary-container": "#d4dcff",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-primary": "#ffffff",
+                        "primary": "#003fb1",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed-dim": "#b5c4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar (Hidden for transactional page per rules, but keeping it available if needed. Replaced by a back-navigation header) -->
+<header class="w-full bg-surface-container-lowest shadow-[0_2px_4px_-1px_rgba(0,63,177,0.05)] sticky top-0 z-50">
+<div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+<span class="font-body text-sm font-medium">Zurück zur Übersicht</span>
+</a>
+<div class="text-primary font-headline font-bold text-lg tracking-tight">
+                🚗 KFZ-Tracker
+            </div>
+<div class="w-24"></div> <!-- Spacer for balance -->
+</div>
+</header>
+<main class="flex-grow flex justify-center py-12 px-4 sm:px-6">
+<div class="w-full max-w-2xl">
+<div class="mb-8">
+<h1 class="font-headline text-[2.75rem] font-bold text-on-surface leading-tight tracking-tight">Neues Fahrzeug</h1>
+<p class="font-body text-base text-on-surface-variant mt-2">Fügen Sie ein neues Fahrzeug zu Ihrem Fuhrpark hinzu.</p>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_-12px_rgba(0,63,177,0.08)] ring-1 ring-outline-variant/10 p-8">
+<form class="space-y-8">
+<!-- Sektion: Basisdaten -->
+<div class="space-y-6">
+<h2 class="font-headline text-[1.125rem] font-medium text-on-surface border-b border-surface-variant pb-2">Basisdaten</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="marke">Marke</label>
+<select class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3" id="marke" name="marke">
+<option disabled="" selected="" value="">Marke auswählen</option>
+<option value="audi">Audi</option>
+<option value="bmw">BMW</option>
+<option value="mercedes">Mercedes-Benz</option>
+<option value="vw">Volkswagen</option>
+<option value="sonstige">Sonstige</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="modell">Modell</label>
+<input class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3" id="modell" name="modell" placeholder="z.B. A4 Avant" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="baujahr">Baujahr</label>
+<select class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3" id="baujahr" name="baujahr">
+<option disabled="" selected="" value="">Jahr auswählen</option>
+<option value="2024">2024</option>
+<option value="2023">2023</option>
+<option value="2022">2022</option>
+<option value="2021">2021</option>
+<option value="2020">2020</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="farbe">Farbe</label>
+<select class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3" id="farbe" name="farbe">
+<option disabled="" selected="" value="">Farbe auswählen</option>
+<option value="schwarz">Schwarz</option>
+<option value="weiss">Weiß</option>
+<option value="grau">Grau</option>
+<option value="silber">Silber</option>
+<option value="blau">Blau</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Sektion: Identifikation & Status -->
+<div class="space-y-6 pt-2">
+<h2 class="font-headline text-[1.125rem] font-medium text-on-surface border-b border-surface-variant pb-2">Identifikation &amp; Status</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="kennzeichen">Kennzeichen</label>
+<div class="relative">
+<input class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3 uppercase" id="kennzeichen" name="kennzeichen" placeholder="M-AB 1234" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider">TÜV fällig</label>
+<div class="flex gap-2">
+<select aria-label="TÜV Monat" class="block w-1/2 bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3">
+<option disabled="" selected="" value="">Monat</option>
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="12">12</option>
+</select>
+<select aria-label="TÜV Jahr" class="block w-1/2 bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3">
+<option disabled="" selected="" value="">Jahr</option>
+<option value="2024">2024</option>
+<option value="2025">2025</option>
+<option value="2026">2026</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Sektion: Finanz & Nutzung -->
+<div class="space-y-6 pt-2">
+<h2 class="font-headline text-[1.125rem] font-medium text-on-surface border-b border-surface-variant pb-2">Finanzen &amp; Nutzung</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="kaufpreis">Kaufpreis (€)</label>
+<input class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3 tabular-nums" id="kaufpreis" name="kaufpreis" placeholder="0,00" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="kilometerstand">Kilometerstand (km)</label>
+<input class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3 tabular-nums" id="kilometerstand" name="kilometerstand" placeholder="0" type="number"/>
+</div>
+</div>
+</div>
+<!-- Sektion: Sonstiges -->
+<div class="space-y-6 pt-2">
+<div class="space-y-2">
+<label class="block font-label text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider" for="notizen">Notizen</label>
+<textarea class="block w-full bg-surface-container-high border-none rounded focus:ring-2 focus:ring-primary focus:outline-none text-on-surface font-body text-sm py-2.5 px-3 resize-y" id="notizen" name="notizen" placeholder="Zusätzliche Informationen zum Fahrzeug..." rows="4"></textarea>
+</div>
+</div>
+<!-- Aktionen -->
+<div class="pt-6 flex items-center justify-end gap-4 border-t border-surface-variant mt-8">
+<button class="px-6 py-2.5 rounded-xl font-body text-sm font-medium text-on-surface-variant bg-transparent ring-1 ring-outline-variant/50 hover:bg-surface-container-low transition-colors" type="button">
+                            Abbrechen
+                        </button>
+<button class="px-6 py-2.5 rounded-xl font-body text-sm font-medium text-on-primary bg-primary bg-gradient-to-b from-primary/90 to-primary hover:bg-primary-fixed-dim hover:text-on-primary-fixed transition-colors shadow-[0_4px_10px_-2px_rgba(0,63,177,0.3)]" type="submit">
+                            Speichern
+                        </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full flex flex-col items-center gap-4 text-center px-4 py-8 bg-surface border-t border-surface-variant">
+<div class="text-[10px] uppercase tracking-wider font-semibold text-outline">
+            KFZ-Tracker — Open Source für den deutschsprachigen Raum
+        </div>
+<div class="flex gap-4 text-sm font-body">
+<a class="text-outline hover:text-on-surface-variant transition-colors underline underline-offset-4" href="#">Impressum</a>
+<a class="text-outline hover:text-on-surface-variant transition-colors underline underline-offset-4" href="#">Datenschutz</a>
+</div>
+</footer>
+</body></html>

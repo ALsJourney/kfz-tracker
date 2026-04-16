@@ -5,6 +5,11 @@ import UploadButton from "@/components/UploadButton";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EmptyState } from "@/components/EmptyState";
 import { formatEuro } from "@/lib/formatEuro";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Icon } from "@/components/Icon";
 
 export default function TeileSection({
   fahrzeugId,
@@ -18,7 +23,6 @@ export default function TeileSection({
   const [loading, setLoading] = useState(false);
   const [rechnungPfad, setRechnungPfad] = useState<string | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
-
   const heute = new Date().toISOString().split("T")[0];
 
   async function handleAdd(e: React.FormEvent<HTMLFormElement>) {
@@ -59,10 +63,8 @@ export default function TeileSection({
     if (res.ok) setTeile(teile.filter((t) => t.id !== id));
   }
 
-  const gesamtTeile = teile.reduce((s, t) => s + t.preis * t.menge, 0);
-
   return (
-    <section className="mb-8">
+    <section className="flex flex-col gap-4">
       <ConfirmDialog
         open={pendingDeleteId !== null}
         title="Teil löschen?"
@@ -72,222 +74,126 @@ export default function TeileSection({
         onCancel={() => setPendingDeleteId(null)}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-900">
-          Teile{" "}
-          <span className="text-gray-400 font-normal text-sm">
-            ({teile.length}
-            {gesamtTeile > 0 ? ` · ${formatEuro(gesamtTeile)}` : ""})
-          </span>
-        </h2>
-        <button
-          type="button"
-          onClick={() => setShowForm(!showForm)}
-          className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors min-h-11"
-        >
-          + Teil erfassen
-        </button>
+      <div className="flex justify-between items-center">
+        <h3 className="text-xl font-semibold text-on-surface font-geist">Ersatzteile & Wartung</h3>
+         <button
+           onClick={() => setShowForm(!showForm)}
+           className="text-sm font-medium text-primary hover:text-primary-container transition-colors flex items-center gap-1"
+         >
+           <Icon name="add" className="text-[18px]" />
+           Teil erfassen
+         </button>
       </div>
 
       {showForm && (
-        <form
-          onSubmit={handleAdd}
-          className="bg-white rounded-xl border border-gray-200 p-5 mb-4 space-y-3"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="teil-name" className="block text-xs font-medium text-gray-600 mb-1">
-                Name *
-              </label>
-              <input
-                id="teil-name"
-                name="name"
-                required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="z.B. Ölfilter"
-              />
+        <div className="bg-surface-container-lowest rounded-xl p-5 cloud-shadow ghost-border">
+          <form onSubmit={handleAdd} className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Name *</Label>
+                <Input name="name" required placeholder="z.B. Ölfilter" className="bg-surface-container-high border-none" />
+              </div>
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Kaufdatum</Label>
+                <Input name="kaufdatum" type="date" defaultValue={heute} className="bg-surface-container-high border-none" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Teilenummer</Label>
+                <Input name="teilenummer" placeholder="z.B. W 712/75" className="bg-surface-container-high border-none" />
+              </div>
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Hersteller</Label>
+                <Input name="hersteller" placeholder="z.B. MANN-Filter" className="bg-surface-container-high border-none" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Preis (&euro;)</Label>
+                <Input name="preis" type="number" min="0" step="0.01" placeholder="0.00" className="bg-surface-container-high border-none" />
+              </div>
+              <div className="space-y-2">
+                <Label className="label-md text-on-surface-variant">Menge</Label>
+                <Input name="menge" type="number" min="1" defaultValue="1" className="bg-surface-container-high border-none" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="label-md text-on-surface-variant">Lieferant</Label>
+              <Input name="lieferant" placeholder="z.B. Auto-Ersatzteile-Müller" className="bg-surface-container-high border-none" />
+            </div>
+            <div className="space-y-2">
+              <Label className="label-md text-on-surface-variant">Notizen</Label>
+              <Textarea name="notizen" rows={3} className="bg-surface-container-high border-none" />
             </div>
             <div>
-              <label htmlFor="teil-kaufdatum" className="block text-xs font-medium text-gray-600 mb-1">
-                Kaufdatum
-              </label>
-              <input
-                id="teil-kaufdatum"
-                name="kaufdatum"
-                type="date"
-                defaultValue={heute}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-              />
+              <Label className="label-md text-on-surface-variant">Rechnung</Label>
+              <UploadButton onUploaded={setRechnungPfad} accept="image/*,application/pdf" />
+              {rechnungPfad && (
+                <a href={rechnungPfad} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-primary hover:underline">
+                  Rechnung anzeigen
+                </a>
+              )}
             </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="teil-nr" className="block text-xs font-medium text-gray-600 mb-1">
-                Teilenummer
-              </label>
-              <input
-                id="teil-nr"
-                name="teilenummer"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="z.B. W 712/75"
-              />
+            <div className="flex gap-2 pt-1">
+              <Button type="submit" disabled={loading} className="bg-gradient-to-b from-primary/90 to-primary shadow-sm">
+                {loading ? "Wird gespeichert…" : "Speichern"}
+              </Button>
+              <Button variant="outline" type="button" onClick={() => { setShowForm(false); setRechnungPfad(null); }} className="ghost-border">
+                Abbrechen
+              </Button>
             </div>
-            <div>
-              <label htmlFor="teil-hersteller" className="block text-xs font-medium text-gray-600 mb-1">
-                Hersteller
-              </label>
-              <input
-                id="teil-hersteller"
-                name="hersteller"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="z.B. MANN-Filter"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label htmlFor="teil-preis" className="block text-xs font-medium text-gray-600 mb-1">
-                Preis (€)
-              </label>
-              <input
-                id="teil-preis"
-                name="preis"
-                type="number"
-                min="0"
-                step="0.01"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0.00"
-              />
-            </div>
-            <div>
-              <label htmlFor="teil-menge" className="block text-xs font-medium text-gray-600 mb-1">
-                Menge
-              </label>
-              <input
-                id="teil-menge"
-                name="menge"
-                type="number"
-                min="1"
-                defaultValue="1"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="teil-lieferant" className="block text-xs font-medium text-gray-600 mb-1">
-              Lieferant
-            </label>
-            <input
-              id="teil-lieferant"
-              name="lieferant"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="z.B. Auto-Ersatzteile-Müller"
-            />
-          </div>
-          <div>
-            <label htmlFor="teil-notizen" className="block text-xs font-medium text-gray-600 mb-1">
-              Notizen
-            </label>
-            <textarea
-              id="teil-notizen"
-              name="notizen"
-              rows={3}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            />
-          </div>
-          <div>
-            <span className="block text-xs font-medium text-gray-600 mb-1">Rechnung</span>
-            <UploadButton onUploaded={setRechnungPfad} accept="image/*,application/pdf" />
-            {rechnungPfad && (
-              <a
-                href={rechnungPfad}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-block text-xs text-blue-600 hover:underline"
-              >
-                Rechnung anzeigen
-              </a>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-2 pt-1">
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 min-h-11"
-            >
-              {loading ? "Wird gespeichert…" : "Speichern"}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setShowForm(false);
-                setRechnungPfad(null);
-              }}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 min-h-11"
-            >
-              Abbrechen
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       )}
 
       {teile.length === 0 ? (
         <EmptyState
-          icon="📦"
+          icon="inventory_2"
           title="Noch keine Teile erfasst"
           description="Erfasse Ersatzteile mit Preis, Menge und optionaler Rechnung."
           action={{ label: "Teil erfassen", onClick: () => setShowForm(true) }}
         />
       ) : (
-        <div className="space-y-3">
-          {teile.map((t) => {
+        <div className="bg-surface-container-lowest rounded-xl cloud-shadow ghost-border overflow-hidden">
+          {teile.map((t, i) => {
             const meta = [t.hersteller, t.teilenummer].filter(Boolean).join(" · ");
             return (
-              <div key={t.id} className="bg-white rounded-xl border border-gray-200 p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div className="font-medium text-gray-900">{t.name}</div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-sm text-gray-600">{t.menge}×</span>
-                        <button
-                          type="button"
-                          onClick={() => setPendingDeleteId(t.id)}
-                          className="p-2.5 rounded-lg text-red-600 hover:bg-red-50 min-h-11 min-w-11 flex items-center justify-center"
-                          aria-label="Teil löschen"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1 flex flex-wrap justify-between gap-x-3 gap-y-0.5">
-                      <span>{meta || "—"}</span>
-                      {t.kaufdatum && (
-                        <span className="shrink-0">
-                          {new Date(t.kaufdatum).toLocaleDateString("de-DE")}
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-sm font-medium text-gray-800 mt-2">
-                      {formatEuro(t.preis)} / Stück = {formatEuro(t.preis * t.menge)} gesamt
-                    </div>
-                    {t.lieferant && (
-                      <p className="text-sm text-gray-600 mt-1">
-                        Gekauft bei: {t.lieferant}
-                      </p>
-                    )}
-                    {t.notizen && <p className="text-xs text-gray-400 mt-1">{t.notizen}</p>}
-                    {t.rechnung_pfad && (
-                      <a
-                        href={t.rechnung_pfad}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-blue-600 hover:underline mt-2 inline-block"
-                      >
-                        Rechnung anzeigen
-                      </a>
+              <div
+                key={t.id}
+                className={`p-4 hover:bg-surface-container-low transition-colors flex items-center justify-between ${i > 0 ? "border-t border-surface-container-low" : ""}`}
+              >
+                <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 rounded-sm bg-surface-container-high flex items-center justify-center text-on-surface-variant shrink-0">
+                     <Icon name="inventory_2" className="text-[20px]" />
+                   </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-on-surface">{t.name}</h4>
+                    <p className="text-xs text-on-surface-variant mt-0.5">
+                      {meta || "—"}
+                      {t.kaufdatum && ` · ${new Date(t.kaufdatum).toLocaleDateString("de-DE")}`}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="text-right">
+                    <span className="text-sm font-semibold text-on-surface" style={{ fontVariantNumeric: "tabular-nums" }}>
+                      {formatEuro(t.preis * t.menge)}
+                    </span>
+                    {t.menge > 1 && (
+                      <span className="text-xs text-on-surface-variant block text-right">
+                        {formatEuro(t.preis)}/Stk.
+                      </span>
                     )}
                   </div>
+                   <Button
+                     variant="destructive"
+                     size="icon-sm"
+                     onClick={() => setPendingDeleteId(t.id)}
+                     aria-label="Teil löschen"
+                   >
+                     <Icon name="delete" className="text-[14px]" />
+                   </Button>
                 </div>
               </div>
             );
