@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "setup": "npm install",
+    "teardown": null,
+    "run": "npm run dev"
+  },
+  "ports": [
+    {
+      "port": 3000,
+      "label": "Dev Server Port"
+    }
+  ]
+}
